@@ -1,4 +1,6 @@
 import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 class Shop{
     public static void main(String args[]){
@@ -11,6 +13,7 @@ class Shop{
 class Menu{
     public static final HashMap<String, Integer> cart = new HashMap<String, Integer>();
     public static final HashMap<String, Integer> offer = new HashMap<String, Integer>();
+    public static final HashMap<String, HashMap<String, String>> orders = new HashMap<String, HashMap<String, String>>();
     public void getMenu(){
         System.out.println("------------------------------Menu---------------------");
         System.out.println("Pizzas :- \n1. 1 large Pizza = 12 AUD\n2. 2 large Pizzas = 22 AUD\n3. 3 or more large pizzas = 10 AUD each (garlic bread for every 3 large pizzas)");
@@ -91,13 +94,13 @@ class Menu{
 				getMenu();
                 break;
 			}else{
-				checkout();
+				getCart();
                 break;
 			}
 		}while(true);
     }
 
-    public void checkout(){
+    public void getCart(){
         Integer price = 0 , total = 0, gtotal = 0;
         System.out.println("\n----------------------Cart--------------------\n");
         System.out.println("Name\t\tQuantity\tPrice\t\tTotal\n");
@@ -131,7 +134,7 @@ class Menu{
                     gtotal += total;
                 }
             }
-            System.out.println(entry.getKey()+"\t\t"+entry.getValue()+"\t\t"+price+"\t\t"+total);
+            System.out.println(entry.getKey()+"\t\t"+entry.getValue()+"\t*\t"+price+"\t\t"+total);
         }
         System.out.println("\nOffers");
         Integer gb = 0, drink = 0;
@@ -147,5 +150,30 @@ class Menu{
             System.out.println("Baklava\t\t" + Math.min(gb, drink)+"\t\t0\t\t0");
         }
         System.out.println("\t\t\t\t\t---------------------------\nGrand Total\t\t\t\t\t$"+gtotal+" AUD\n");
+        System.out.println("1. Checkout\n2. Payment Information");
+        Scanner readobj = new Scanner(System.in);
+        Integer checkop = readobj.nextInt();
+        if(checkop == 1){
+            Checkout();
+        }else{
+            getMenu();
+            System.out.println("Payment Information");
+        }
+    }
+
+
+    public void checkout(){
+        Scanner readobj = new Scanner(System.in);
+        System.out.print("Name : ");
+        public static Integer name = readobj.nextLine();
+        System.out.print("Email : ");
+        public static Integer email = readobj.nextLine();
+        System.out.print("Address : ");
+        public static Integer address = readobj.nextLine();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String now = dateFormat.format(date);
+        orders.put((now), new HashMap<String, String>());
+        rst.get(now).put("name", "Derby Thai");
     }
 }
