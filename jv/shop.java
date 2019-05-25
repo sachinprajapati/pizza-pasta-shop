@@ -13,7 +13,11 @@ class Shop{
 class Menu{
     public static final HashMap<String, Integer> cart = new HashMap<String, Integer>();
     public static final HashMap<String, Integer> offer = new HashMap<String, Integer>();
-    public static final HashMap<String, HashMap<String, String>> orders = new HashMap<String, HashMap<String, String>>();
+    public static final HashMap<String, String> user = new HashMap<String, String>();
+    public static final HashMap<String, HashMap<String, Integer>> orders = new HashMap<String, HashMap<String, Integer>>();
+    public static String name;
+    public static String email;
+    public static String address;
     public void getMenu(){
         System.out.println("------------------------------Menu---------------------");
         System.out.println("Pizzas :- \n1. 1 large Pizza = 12 AUD\n2. 2 large Pizzas = 22 AUD\n3. 3 or more large pizzas = 10 AUD each (garlic bread for every 3 large pizzas)");
@@ -156,24 +160,111 @@ class Menu{
         if(checkop == 1){
             Checkout();
         }else{
-            getMenu();
-            System.out.println("Payment Information");
+            paymentInfo();
         }
     }
 
 
-    public void checkout(){
+    public void Checkout(){
         Scanner readobj = new Scanner(System.in);
         System.out.print("Name : ");
-        public static Integer name = readobj.nextLine();
+        name = readobj.nextLine();
         System.out.print("Email : ");
-        public static Integer email = readobj.nextLine();
+        email = readobj.nextLine();
         System.out.print("Address : ");
-        public static Integer address = readobj.nextLine();
+        address = readobj.nextLine();
+        user.put("name", name);
+        user.put("email", email);
+        user.put("address", address);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String now = dateFormat.format(date);
-        orders.put((now), new HashMap<String, String>());
-        rst.get(now).put("name", "Derby Thai");
+        orders.put(now, new HashMap<String, Integer>());
+        for (Map.Entry<String, Integer> entry : cart.entrySet()){
+           orders.get(now).put(entry.getKey(), Integer.parseInt(entry.getValue().toString()));
+        }
+        cart.clear();
+        System.out.print("\n1. Menu\n2. Payment Information\n3. Quit\nEnter your choice : ");
+        Integer finalchoice = readobj.nextInt();
+        if(finalchoice == 1){
+            getMenu();
+        }else if(finalchoice == 2){
+            paymentInfo();
+        }
+    }
+
+    public void paymentInfo(){
+        boolean pizza = false, pasta = false;
+        System.out.print("\n1. Total payment for pizza\n2. Total payment for pasta\n3. Total payment for pizza and pasta\nEnter your choice : ");
+        Scanner readpay = new Scanner(System.in);
+        Integer payop = readpay.nextInt();
+        if(payop == 1){
+            pizza = true;
+        }else if (payop == 2){
+            pasta = true;
+        }else{
+            pizza = true;
+            pasta = true;
+        }
+        getPaymentAmount(pizza, pasta);
+    }
+
+    public void getPaymentAmount(boolean pizza , boolean pasta){
+        System.out.println("\n-----------------------------Invoice-----------------------------------");
+        System.out.println("\nQuantity\tItem\t\tPrice\t\tTotal");
+        for (Object objectName : orders.keySet()){
+			Integer price = 0, total = 0, gtotal = 0, qty = 0;
+			if(pizza){
+                System.out.println("\n\nDate & Time \t:\t "+objectName);
+                qty = orders.get(objectName).get("pizza");
+				price = getPzPrice(orders.get(objectName).get("pizza"));
+                gtotal += price;
+                System.out.println(qty+"\t\tPizza\t\t"+price+"\t\t"+price);
+            }
+            if(pasta){
+                qty = orders.get(objectName).get("pasta");
+                price = getPsPrice(orders.get(objectName).get("pasta"));
+                gtotal += price;
+                System.out.println(qty+"\t\tPasta\t\t"+price+"\t\t"+price);
+                System.out.println("\t\t\t\t\t-----------------------\nGrand Total\t\t\t\t\t"+gtotal);
+			}
+        }
+        System.out.println("------------------Delivery Detail-------------------");
+        System.out.println("Name : "+name);
+        System.out.println("Email : "+email);
+        System.out.println("Address : "+address+"\n-------------------------------------------\n");
+        System.out.println("-----------------------------End Invoice---------------------------------");
+        System.out.print("\n1. Menu\n2. Payment Information\n3. Quit\nEnter your choice : ");
+        Scanner readlast = new Scanner(System.in);
+        Integer finalchoice = readlast.nextInt();
+        if(finalchoice == 1){
+            getMenu();
+        }else if(finalchoice == 2){
+            paymentInfo();
+        }
+    }
+
+    public int getPzPrice(Integer qty){
+        Integer price = 0;
+        if(qty == 1){
+            price = 12;
+        }else if (qty == 2){
+            price = 22;
+        }else if (qty > 2){
+            price = qty*10;
+        }
+        return price;
+    }
+
+    public int getPsPrice(Integer qty){
+        Integer price = 0;
+        if(qty == 1){
+            price = 8;
+        }else if(qty == 2){
+            price = 15;
+        }else if (qty > 2){
+            price = qty*7;
+        }
+        return price;
     }
 }
