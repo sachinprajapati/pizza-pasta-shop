@@ -13,8 +13,14 @@ Pastas :-
 
 For every 3 pizzas AND 3 pastas, Sab will give a small box of Baklava (a famous dessert item) in addition to garlic-bread and 1.5-liter soft drinks.
 
-7. Payment Information
-8. Quit\n"""
+7. Cart
+8. Payment Information
+9. Quit\n"""
+
+def PaymentInfo(pizza, pasta):
+    total = gtotal = 0
+    print("-"*20+"Payment Information"+"-"*20)
+    print("Item\t\tQuantity\t\tprice\t\tTotal")
 
 cart = {"pizza": 0, "pasta": 0, "garlic": 0, "drink": 0, "baklava": 0}
 
@@ -62,7 +68,7 @@ while True:
         cart["pasta"] += countps
         print("you have seleted {} large pastas\nAmount = {} AUD".format(countps, 7*countps))
     elif n == 7:
-        print("payment information\n")
+        print("-----------------Cart--------------------\n")
         print("Item Name\t\tQuantity\tPrice\tTotal")
         if cart["pizza"] == 1:
             print("Pizza\t\t\t1\t*\t12\t12")
@@ -108,7 +114,7 @@ while True:
                         address = input("please eneter your address\n")
                         dt = datetime.now()
                         print("\nCongratulations {} your order has been Confirmed at {} ".format(name, dt.strftime("%d-%m-%Y %I:%M %p")))
-                        b = input("\nPress 1 to Add More else Anything\n")
+                        b = input("\nEnter 1 to Menu else Anything\n")
                         order[dt] = cart
                         for i,j in cart.items():
                             cart[i] = 0
@@ -120,7 +126,20 @@ while True:
                     else:
                         print("please enter valid choice")
     elif n == 8:
-        print("thanks for using")
+        print("-"*20+"Payment Option"+"-"*20)
+        print("1. Payment For Pizza\n2. Payment For Pasta\n3. Total Payments")
+        pay = int(input())
+        pizza = pasta = False
+        if(pay == 1):
+            pizza = True
+        elif(pay == 2):
+            pasta = True
+        else:
+            pizza = pasta = True
+        PaymentInfo(pizza, pasta)
+        break
+    elif n == 9:
+        sys.exit()
         break
     else:
         print("Invalid Choice")

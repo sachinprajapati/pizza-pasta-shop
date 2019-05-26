@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include <time.h>
+#include <stdbool.h>
+#include <stdlib.h>
 #ifdef _WIN32
     #include <windows.h>
 #else
@@ -7,14 +9,16 @@
 #endif
 
 int orderNum=0, pizza, pasta, gb, drink, baklava;
+char name, email, address[50];
 void Menu();
 void SelectChoice(int choice);
 void wait( int seconds );
-void getOrder();
+void PaymentInfo();
 int getPzAmount(int num);
 int getPsAmount(int num);
 void getCart();
-void PaymentInfo();
+void Checkout();
+void PaymentHistory(bool pizza, bool pasta);
 
 struct Order
 {
@@ -22,18 +26,19 @@ struct Order
     struct tm tm;
 };
 
-struct Order arr[100];
+struct Order orders[100];
 
 int main(){
-    int choice;
+    int choice, x;
 	Menu();
+    return 0;
 }
 
 void Menu(){
     printf("---------------------------------------Menu------------------------------------------");
     printf("\nPizzas :- \n1. 1 large Pizza = 12 AUD\n2. 2 large Pizzas = 22 AUD\n3. 3 or more large pizzas = 10 AUD each (garlic bread for every 3 large pizzas)");
     printf("\nPastas :- \n4. 1 large pasta = 8 AUD\n5. 2 large pastas = 15 AUD\n6. 3 or more large pastas = 7 AUD each (1.25 liter soft drinks for every 3 large pastas)");
-    printf("\nFor every 3 pizzas AND 3 pastas, Sab will give a small box of Baklava (a famous dessert item) in addition to garlic-bread and 1.5-liter soft drinks.\n\n7. Payment Information\n8. Quit");
+    printf("\nFor every 3 pizzas AND 3 pastas, Sab will give a small box of Baklava (a famous dessert item) in addition to garlic-bread and 1.5-liter soft drinks.\n\n7. Payment Information\n8. Cart\n9. Quit");
     printf("\n-------------------------------------------------------------------------------------\nEnter Choice : ");
     int choice;
     scanf("%d", &choice);
@@ -86,11 +91,16 @@ void SelectChoice(int choice){
             case 7 :
                 PaymentInfo();
                 break;
-			default :
+            case 8 :
+                getCart();
+                break;
+            case 9 :
+                exit(1);
+            default :
 			 printf("Invalid Choice\nEnter Choice : " );
              scanf("%d", &choice);
 		}
-        printf("\n1. Add More\n2. Cart\nEnter Choice : ");
+        printf("\n1. Menu\n2. Cart\nEnter Choice : ");
         scanf("%d", &checkout);
         if(checkout == 1){
             Menu();
@@ -104,8 +114,7 @@ void SelectChoice(int choice){
                 Menu();
                 break;
             }else{
-                printf("checkout");
-                break;
+                Checkout();
             }
         }
 
@@ -124,20 +133,38 @@ void wait( int seconds )
 }
 
 
-void getOrder(){
-    for(orderNum;orderNum<5;orderNum++){
-        time_t t = time(NULL);
-        arr[orderNum].pizza = 2;
-        arr[orderNum].pasta = 3;
-        arr[orderNum].tm = *localtime(&t);
-        wait(2);
+void PaymentInfo(){
+    bool pizza = false, pasta = false;
+    int choice;
+    printf("\n1. Total payment for pizza\n2. Total payment for pasta\n3. Total payment for pizza and pasta\nEnter your choice : ");
+    scanf("%d", &choice);
+    if(choice = 1){
+        pizza = true;
+    }else if(choice == 2){
+        pasta = true;
+    }else{
+        pizza = true;
+        pasta = true;
     }
-    for(int i = 0;i<orderNum;i++){
-        printf("pizza is %d\n", arr[i].pizza);
-        printf("pasta is %d\n", arr[i].pasta);
-        printf("now: %d-%d-%d %d:%d:%d\n", arr[i].tm.tm_year + 1900, arr[i].tm.tm_mon + 1, arr[i].tm.tm_mday, arr[i].tm.tm_hour, arr[i].tm.tm_min, arr[i].tm.tm_sec);
-    }	
+    PaymentHistory(pizza, pasta);
 }
+
+void PaymentHistory(bool pizza, bool pasta){
+
+    printf("\n------------------------------Payment Information---------------------------------\n");
+    printf("\nItem\t\tQuantity\t\tPrice\n");
+    for(int i = 0;i<orderNum;i++){
+        printf("\nDate & Time\t : \t%d-%d-%d %d:%d:%d\n", orders[i].tm.tm_year + 1900, orders[i].tm.tm_mon + 1, orders[i].tm.tm_mday, orders[i].tm.tm_hour, orders[i].tm.tm_min, orders[i].tm.tm_sec);
+        if(pizza){
+            printf("Pizza\t\t%d\t\t%d\n", orders[i].pizza, getPzAmount(orders[i].pizza));
+        }
+        if(pasta){
+            printf("Pasta\t\t%d\t\t%d\n", orders[i].pasta, getPsAmount(orders[i].pasta));
+        }
+    }
+}
+
+
 
 
 void getCart(){
@@ -168,8 +195,16 @@ void getCart(){
 }
 
 
-void PaymentInfo(){
-    printf("payment info");
+void Checkout(){
+    orders[orderNum].pizza = pizza;
+    orders[orderNum].pasta = pasta;
+    time_t t = time(NULL);
+    orders[orderNum].tm = *localtime(&t);
+    pizza = 0;
+    pasta = 0;
+    orderNum++;
+    printf("\nYour order has been confirmed\n");
+    Menu();
 }
 
 int getPzAmount(int num){
