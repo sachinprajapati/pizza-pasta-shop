@@ -1,0 +1,6 @@
+(setq empList (make-hash-table)) 
+(setf (gethash '1 empList) '1)
+(setf (gethash '2 empList) '2) 
+(write (gethash '1 empList)) 
+(terpri)
+(write (gethash '2 empList))

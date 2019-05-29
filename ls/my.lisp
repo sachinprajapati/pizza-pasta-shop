@@ -1,6 +1,6 @@
 ;(setq a (read))
 
-(defvar *valid-menu* (list 1 2 3 4 5 6 7 8) )
+(defvar *valid-menu* (list 1 2 3 4 5 6 7 8 9) )
 
 (defvar pizza 0)
 
@@ -20,19 +20,61 @@
 ;   (t (format t "~% value of a is ~d " a)))
 
 (defun getPaymentInfo ()
-    (format T "~%~a~%" alist-of-colors)
+	(setq pz 0)
+	(setq ps 0)
+	(format T "~%--------------------Payment Option--------------------~%1. Payment For Pizza~%2. Payment For Pasta~%3. Total Payments~%")
+	(format T "Enter your chice : ")
+	(setq choice (read))
+	(cond ((= choice 1) (setq pz 1))
+      ((= choice 2) (setq ps 1))
+      (t
+      	(progn
+      		(setq pz 1)
+      		(setq ps 2)
+      	) 
+      ))
+	(PaymentHistory pz ps)
 )
 
+(defun PaymentHistory (pz ps)
+	(setq gtotal 0)
+	(progn
+        (format T "~%------------------------------Payment History-----------------------------~%")
+        (format T "~%Item            Quantity    Total")
+        (if (= pz 1)
+            (progn
+                (format T "~%Pizza           ~a           ~a~%" pizza (getPzPrice pizza))
+                (setq gtotal (+ gtotal (getPzPrice pizza)))
+            )
+        )
+        (if (= ps 1)
+            (progn
+                (format T "~%Pasta           ~a          ~a~%" pasta (getPsPrice pasta))
+                (setq gtotal (+ gtotal (getPsPrice pasta)))
+            )
+        )
+        (if (> pizza 2)
+            (format T "~%Garlic Bread    ~a           0~%" (getGB pizza))
+        )
+        (if (> pasta 2)
+            (format T "~%Soft Drink      ~a           0~%" (getGB pasta))
+        )
+        (if (and (> pizza 8)
+                 (> pasta 8))
+            (format T "~%Baklava         ~a           0" (getBK (floor pizza 3) (floor pasta 3)))
+        )
+        (format T "~%                       ----------------------")
+        (format T "~%Grand Total is               ~a~%" gtotal)
+	)
+)
 
 
 (defun getPzPrice(qty)
     (if (= qty 1)
       (return-from getPzPrice 12)
-      12
     )
     (if (= qty 2)
-(defvar *valid-sports* (list "Athletics" "Baseball" "Cricket") )      (return-from getPzPrice 22)
-      22
+		(return-from getPzPrice 22)
     )
     (if (> qty 2)
       (return-from getPzPrice (* qty 10))
@@ -96,7 +138,7 @@
         )
         (if (and (> pizza 8)
                  (> pasta 8))
-            (format T "~%Baklava         ~a          0" (getBK (floor pizza 3) (floor pasta 3)))
+            (format T "~%Baklava         ~a           0" (getBK (floor pizza 3) (floor pasta 3)))
         )
         (format T "~%                       ----------------------")
         (format T "~%Grand Total is               ~a~%" gtotal)
@@ -111,7 +153,7 @@
                 (setq email (read))
                 (princ "Enter Address: ")
                 (setq address  (read))
-                (princ "~%You order confirmed~%")
+                (format T "~%You order confirmed~%")
             )
         )
     ) 
@@ -150,6 +192,12 @@
     )
     (if (= option 8)
         (getPaymentInfo)
+    )
+    (if (= option 9)
+        (progn
+        	(format T "~%Thank for using~%")
+        	(quit)
+        )
     )
 )
 
