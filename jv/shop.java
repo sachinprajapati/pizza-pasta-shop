@@ -26,7 +26,11 @@ class Menu{
         System.out.println("-------------------------------------------------------");
 
         Scanner readobj = new Scanner(System.in);
-        Integer choice = readobj.nextInt();
+        while (!readobj.hasNextInt()){
+        	System.out.print("Please Enter Valid Number : ");
+        	readobj.next();
+        }
+		int choice = readobj.nextInt();
         getChoice(choice);
 
     }
@@ -46,8 +50,12 @@ class Menu{
 		        break;
 		    case 3:
 		        System.out.print("Please Enter Quantity : ");
-		        Scanner readpizza = new Scanner(System.in);
-		        Integer qty = readpizza.nextInt();
+		        Scanner sc = new Scanner(System.in);
+                while (!sc.hasNextInt()){
+                	System.out.print("Please Enter Valid Number : ");
+					sc.next();
+				}
+                Integer qty = sc.nextInt();
 		        if (qty == 1){
 		            choice = 1;
 		            continue;
@@ -70,8 +78,12 @@ class Menu{
                 break;
 		    case 6:
 		        System.out.print("Please Enter Quantity : ");
-                Scanner readpasta = new Scanner(System.in);
-                Integer pqty = readpasta.nextInt();
+                Scanner validch = new Scanner(System.in);
+                while (!validch.hasNextInt()){
+                	System.out.print("Please Enter Valid Number : ");
+					validch.next();
+				}
+                Integer pqty = validch.nextInt();
                 if (pqty == 1){
                     choice = 4;
                     continue;
@@ -84,16 +96,30 @@ class Menu{
                 offer.put("soft drink", pqty/3);
                 System.out.println(pqty+" pizza added to your cart Price : "+pqty*10+" and offer drink "+pqty/3);
 		        break;
+		    case 7:
+		        paymentInfo();
+                break;
+            case 8:
+                System.out.println("Thanks for Using");
+                System.exit(0);
+                break;
 		    default:
 		        System.out.print("\nInvalid choice\nPlease Enter Valid choice : ");
-                Scanner readchoice = new Scanner(System.in);
-                Integer validchoice = readchoice.nextInt();
-                choice = validchoice;
+                Scanner choicer = new Scanner(System.in);
+                while (!choicer.hasNextInt()){
+                	System.out.print("Please Enter Valid Number : ");
+					choicer.next();
+				}
+                choice = choicer.nextInt();
 		        continue;
 		    }
-			System.out.print("\n1. Add More\n2. Checkout\nEnter Choice : ");
-            Scanner readcheck = new Scanner(System.in);
-			Integer checkout = readcheck.nextInt();
+			System.out.print("\n1. Add More\n2. Cart\nEnter Choice : ");
+            Scanner sc = new Scanner(System.in);
+            while (!sc.hasNextInt()){
+            	System.out.print("Please Enter Valid Number : ");
+				sc.next();
+			}
+            Integer checkout = sc.nextInt();
 			if(checkout == 1){
 				getMenu();
                 break;
@@ -155,8 +181,12 @@ class Menu{
         }
         System.out.println("\t\t\t\t\t---------------------------\nGrand Total\t\t\t\t\t$"+gtotal+" AUD\n");
         System.out.println("1. Checkout\n2. Payment Information");
-        Scanner readobj = new Scanner(System.in);
-        Integer checkop = readobj.nextInt();
+        Scanner sc = new Scanner(System.in);
+        while (!sc.hasNextInt()){
+        	System.out.print("Please Enter Valid Number : ");
+			sc.next();
+		}
+        Integer checkop = sc.nextInt();
         if(checkop == 1){
             Checkout();
         }else{
@@ -185,7 +215,12 @@ class Menu{
         }
         cart.clear();
         System.out.print("\n1. Menu\n2. Payment Information\n3. Quit\nEnter your choice : ");
-        Integer finalchoice = readobj.nextInt();
+        Scanner sc = new Scanner(System.in);
+        while (!sc.hasNextInt()){
+        	System.out.print("Please Enter Valid Number : ");
+			sc.next();
+		}
+        Integer finalchoice = sc.nextInt();
         if(finalchoice == 1){
             getMenu();
         }else if(finalchoice == 2){
@@ -196,8 +231,12 @@ class Menu{
     public void paymentInfo(){
         boolean pizza = false, pasta = false;
         System.out.print("\n1. Total payment for pizza\n2. Total payment for pasta\n3. Total payment for pizza and pasta\nEnter your choice : ");
-        Scanner readpay = new Scanner(System.in);
-        Integer payop = readpay.nextInt();
+        Scanner sc = new Scanner(System.in);
+        while (!sc.hasNextInt()){
+        	System.out.print("Please Enter Valid Number : ");
+			sc.next();
+		}
+        Integer payop = sc.nextInt();
         if(payop == 1){
             pizza = true;
         }else if (payop == 2){
@@ -235,8 +274,12 @@ class Menu{
         System.out.println("Address : "+address+"\n-------------------------------------------\n");
         System.out.println("-----------------------------End Invoice---------------------------------");
         System.out.print("\n1. Menu\n2. Payment Information\n3. Quit\nEnter your choice : ");
-        Scanner readlast = new Scanner(System.in);
-        Integer finalchoice = readlast.nextInt();
+        Scanner sc = new Scanner(System.in);
+        while (!sc.hasNextInt()){
+        	System.out.print("Please Enter Valid Number : ");
+			sc.next();
+		}
+        Integer finalchoice = sc.nextInt();
         if(finalchoice == 1){
             getMenu();
         }else if(finalchoice == 2){

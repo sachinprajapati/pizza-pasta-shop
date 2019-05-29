@@ -41,7 +41,15 @@ void Menu(){
     printf("\nFor every 3 pizzas AND 3 pastas, Sab will give a small box of Baklava (a famous dessert item) in addition to garlic-bread and 1.5-liter soft drinks.\n\n7. Payment Information\n8. Cart\n9. Quit");
     printf("\n-------------------------------------------------------------------------------------\nEnter Choice : ");
     int choice;
-    scanf("%d", &choice);
+    char *p, s[100];
+
+    while (fgets(s, sizeof(s), stdin)) {
+        choice = strtol(s, &p, 10);
+        if (p == s || *p != '\n') {
+            printf("Please enter an integer: ");
+        } else break;
+    }
+    printf("You entered: %d\n", choice);
     SelectChoice(choice);
 }
 
@@ -101,7 +109,14 @@ void SelectChoice(int choice){
              scanf("%d", &choice);
 		}
         printf("\n1. Menu\n2. Cart\nEnter Choice : ");
-        scanf("%d", &checkout);
+        char *p, s[100];
+
+		while (fgets(s, sizeof(s), stdin)) {
+		    checkout = strtol(s, &p, 10);
+		    if (p == s || *p != '\n') {
+		        printf("Please enter an integer: ");
+		    } else break;
+		}
         if(checkout == 1){
             Menu();
             break;
@@ -109,7 +124,14 @@ void SelectChoice(int choice){
             getCart();
             int checkop;
             printf("\n1. Add More\n2. Checkout\nEnter Choice : ");
-            scanf("%d", &checkop);
+            char *p, s[100];
+
+			while (fgets(s, sizeof(s), stdin)) {
+				checkop = strtol(s, &p, 10);
+				if (p == s || *p != '\n') {
+				    printf("Please enter an integer: ");
+				} else break;
+			}
             if (checkop == 1){
                 Menu();
                 break;
@@ -137,7 +159,15 @@ void PaymentInfo(){
     bool pizza = false, pasta = false;
     int choice;
     printf("\n1. Total payment for pizza\n2. Total payment for pasta\n3. Total payment for pizza and pasta\nEnter your choice : ");
-    scanf("%d", &choice);
+    char *p, s[100];
+    int n;
+
+    while (fgets(s, sizeof(s), stdin)) {
+        choice = strtol(s, &p, 10);
+        if (p == s || *p != '\n') {
+            printf("Please enter an integer: ");
+        } else break;
+    }
     if(choice = 1){
         pizza = true;
     }else if(choice == 2){
